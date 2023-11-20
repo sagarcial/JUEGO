@@ -6,6 +6,8 @@ from global_Var import *
 
 pygame.init()
 pygame.mixer.init()
+pygame.mixer.music.load('music/Orbital Colossus.mp3')
+
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Camino Hacia El Anillo")
 clock = pygame.time.Clock()
@@ -14,6 +16,8 @@ fps = 60
 
 # Carga la imagen de fondo
 background = pygame.image.load("img/bg.jpg")
+
+background_position_y = 0
 
 all_sprites = pygame.sprite.Group()
 all_enemys = pygame.sprite.Group()
@@ -68,10 +72,12 @@ while running:
 
     all_sprites.update()
 
-
+    # Actualiza la posición vertical del fondo
+    background_position_y -= 1
 
     # Dibuja la imagen de fondo
-    screen.blit(background, (0, 0))
+    screen.blit(background, (0, background_position_y))
+    screen.blit(background, (0, background_position_y + height))
 
     all_sprites.draw(screen)
     all_bullets.update()
@@ -104,7 +110,7 @@ while running:
     player.draw_health()
 
     # Dibuja la puntuación en la esquina superior derecha
-    score_text = score_font.render(f"Score: {score}", True, white)
+    score_text = score_font.render(f"Puntuación: {score}", True, white)
     score_rect = score_text.get_rect()
     score_rect.topright = (width - 10, 10)
     screen.blit(score_text, score_rect)
@@ -116,7 +122,7 @@ while running:
         screen.blit(game_over_text, game_over_rect)
 
         # Muestra la puntuación alcanzada
-        score_text = score_font.render(f"Score: {score}", True, white)
+        score_text = score_font.render(f"Puntuación: {score}", True, white)
         score_rect = score_text.get_rect(center=(width // 2, height // 2 + 40))
         screen.blit(score_text, score_rect)
 
@@ -127,5 +133,3 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
-
-

@@ -73,11 +73,14 @@ while running:
     all_sprites.update()
 
     # Actualiza la posición vertical del fondo
-    background_position_y -= 1
-
+    background_position_y += 1
+    if background_position_y >= height:
+        background_position_y = 0
     # Dibuja la imagen de fondo
+    
     screen.blit(background, (0, background_position_y))
-    screen.blit(background, (0, background_position_y + height))
+    screen.blit(background, (0, background_position_y - height))
+    
 
     all_sprites.draw(screen)
     all_bullets.update()

@@ -30,10 +30,12 @@ all_sprites.add(player)
 enemy_spawn_time = 1000  # tiempo para que aparezcan nuevos enemigos
 last_enemy_spawn = pygame.time.get_ticks()
 
-score = 0  # Inicializa la puntuación
-score_font = pygame.font.Font(None, 36)  # Fuente para la puntuación
+score = 0  # Inicializa la score
+score_font = pygame.font.Font(None, 36)  # Fuente para la score
 
 player_score = 0
+
+enemy_health_increase_count = 0
 
 running = True
 
@@ -94,11 +96,12 @@ while running:
         all_sprites.add(enemy)
         all_enemys.add(enemy)
 
-    # Colisiones entre balas y enemigos
-    hits = pygame.sprite.groupcollide(all_enemys, all_bullets, True, True)
+    hits = pygame.sprite.groupcollide(all_enemys, all_bullets, False, True)
     for enemy, bullets in hits.items():
-        enemy.take_damage(len(bullets))
-        score += 10  # Incrementa la puntuación cuando un enemigo es eliminado
+        enemy.take_damage(10)
+        if enemy.health <= 0:
+            enemy.kill()
+            score += 10  # Incrementa la score cuando un enemigo es eliminado
 
     # Colisiones entre balas enemigas y el jugador
     hits_player = pygame.sprite.spritecollide(player, all_bullets, True)
@@ -112,8 +115,8 @@ while running:
  
     player.draw_health()
 
-    # Dibuja la puntuación en la esquina superior derecha
-    score_text = score_font.render(f"Puntuación: {score}", True, white)
+    # Dibuja la score en la esquina superior derecha
+    score_text = score_font.render(f"score: {score}", True, white)
     score_rect = score_text.get_rect()
     score_rect.topright = (width - 10, 10)
     screen.blit(score_text, score_rect)
@@ -124,14 +127,20 @@ while running:
         game_over_rect = game_over_text.get_rect(center=(width // 2, height // 2))
         screen.blit(game_over_text, game_over_rect)
 
-        # Muestra la puntuación alcanzada
-        score_text = score_font.render(f"Score: {score}", True, white)
+        # Muestra la score alcanzada
+        score_text = score_font.render(f"score: {score}", True, white)
         score_rect = score_text.get_rect(center=(width // 2, height // 2 + 40))
         screen.blit(score_text, score_rect)
 
         pygame.display.flip()
         pygame.time.delay(2500)
         running = False
+    
+    if score >= 300 * (enemy_health_increase_count + 1):
+        for enemy in all_enemys:
+            enemy.increase_health(20)
+
+    enemy_health_increase_count += 1
 
     pygame.display.flip()
 

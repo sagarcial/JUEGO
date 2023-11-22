@@ -166,7 +166,7 @@ while running:
         pygame.time.delay(2500)
         running = False
     
-    if score >= 100 * health_increase_counter:
+    if score >= 50 * health_increase_counter:
             for enemy in all_enemys:
                 if not enemy.increased_health:
                     enemy.increase_health(health_increase_amount)

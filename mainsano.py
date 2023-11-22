@@ -167,13 +167,13 @@ while running:
         running = False
     
     if score >= 50 * health_increase_counter:
-            for enemy in all_enemys:
-                if not enemy.increased_health:
-                    enemy.increase_health(health_increase_amount)
-                    enemy.increased_health = True
+        for enemy in all_enemys:
+            if not enemy.increased_health:
+                enemy.increase_health(health_increase_amount)
+                enemy.increased_health = True
 
-            health_increase_counter += 1
-            health_increase_amount += 20  # Aumenta la cantidad de aumento de salud
+        health_increase_counter += 1
+        health_increase_amount += 20  # Aumenta la cantidad de aumento de salud
 
 
     pygame.display.flip()

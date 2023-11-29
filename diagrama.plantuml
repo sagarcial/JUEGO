@@ -1,0 +1,103 @@
+@startuml
+class GlobalVar {
+    # white: Color
+    # black: Color
+    # width: int
+    # height: int
+}
+
+class Bullet {
+    - image: Surface
+    - rect: Rect
+    - speed_x: int
+    - speed_y: int
+    + Bullet(x: int, y: int, speed_y: int)
+    + update(): void
+}
+
+class Player {
+    - bullets: Group
+    - enemys: Group
+    - screen: Surface
+    - image: Surface
+    - rect: Rect
+    - speed_x: int
+    - speed_y: int
+    - health: int
+    - health_color: tuple
+    - heart_image: Surface
+    - heart_rect: Rect
+    + Player(bullets: Group, enemys: Group, screen: Surface)
+    + update(): void
+    + move_left(): void
+    + move_right(): void
+    + move_up(): void
+    + move_down(): void
+    + stop(): void
+    + shoot(): void
+    + take_damage(damage: int): void
+    + draw_health(): void
+}
+
+class Enemy {
+    - bullets: Group
+    - player_rect: Rect
+    - image: Surface
+    - rect: Rect
+    - speed_x: int
+    - speed_y: int
+    - health: int
+    - last_shoot: int
+    - shoot_delay: int
+    - increased_health: bool
+    + Enemy(bullets: Group, player_rect: Rect)
+    + update(): void
+    + shoot(): void
+    + take_damage(damage: int): void
+    + reset_health(): void
+    + increase_health(amount: int): void
+}
+
+class MainMenu {
+    - menu_font: Font
+    - menu_text: Surface
+    - menu_rect: Rect
+    - menu_background: Surface
+    - menu_background_image: Surface
+    + main_menu(): void
+}
+
+class Game {
+    - screen: Surface
+    - clock: Clock
+    - fps: int
+    - background: Surface
+    - background_position_y: int
+    - all_sprites: Group
+    - all_enemys: Group
+    - all_bullets: Group
+    - player: Player
+    - player_rect: Rect
+    - enemy_spawn_time: int
+    - last_enemy_spawn: int
+    - score: int
+    - score_font: Font
+    - player_score: int
+    - health_increase_counter: int
+    - health_increase_amount: int
+    - running: bool
+    - paused: bool
+    + main_menu(): void
+}
+
+GlobalVar -- Game
+GlobalVar -- Player
+GlobalVar -- Bullet
+GlobalVar -- Enemy
+Player --* Bullet
+Enemy --* Bullet
+MainMenu -- Game
+Player --* Game
+Bullet --* Game
+Enemy --* Game
+@enduml
